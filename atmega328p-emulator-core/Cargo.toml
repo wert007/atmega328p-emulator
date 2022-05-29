@@ -6,3 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Use local version to fasten up development.
+# avr = { git = "https://github.com/wert007/avr.git" }
+avr = { path = "../../avr" }
+elf_rs = "0.2.0"
