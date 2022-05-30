@@ -1,4 +1,4 @@
-use avr::{Addon, Instruction};
+use avr::{Addon, Instruction, Space};
 
 #[derive(Debug, Default)]
 pub struct ArduinoUno {
@@ -43,6 +43,26 @@ impl Addon for DumpRegistersAddon {
             }
         }
         println!();
+        Ok(())
+    }
+}
+
+#[derive(Default)]
+pub struct MemoryWatcher {
+    memory: Option<Space>,
+}
+
+impl Addon for MemoryWatcher {
+    fn tick(&mut self, core: &mut avr::Core, _: Instruction, _: u32) -> Result<(), avr::Error> {
+        if let Some(memory) = self.memory.take() {
+            for (index, &cell) in core.memory().bytes().enumerate() {
+                let old = memory.get_u8(index)?;
+                if cell != old {
+                    println!("Change in {index:5X}: {old:2x} -> {cell:2x}");
+                }
+            }
+        }
+        self.memory = Some(core.memory().clone());
         Ok(())
     }
 }
