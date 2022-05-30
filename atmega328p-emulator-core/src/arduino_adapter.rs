@@ -7,7 +7,7 @@ pub struct ArduinoUno {
 
 impl Addon for ArduinoUno {
     fn tick(&mut self, core: &mut avr::Core, _inst: Instruction, _: u32) -> Result<(), avr::Error> {
-        let value = core.register_file().gpr(25)?;
+        let value = core.memory().get_u8(0x25)?;
         if value != self.old_value {
             println!("Some pin has changed! {} -> {}", self.old_value, value);
             self.old_value = value;
