@@ -1,4 +1,3 @@
-use avr::addons::instruction_listener::InstructionListener;
 use elf_rs::*;
 
 mod arduino_adapter;
@@ -42,8 +41,10 @@ pub fn emulate_program(program: &[u8]) {
     //     ],
     //     base_addon: arduino_adapter::DumpRegistersAddon {},
     // };
-    // mcu.attach(Box::new(arduino));
-    mcu.attach(Box::new(InstructionListener {}));
+    mcu.attach(Box::new(arduino));
+    // mcu.attach(Box::new(breakpoint));
+    // mcu.attach(Box::new(arduino_adapter::MemoryWatcher::default()));
+    // mcu.attach(Box::new(avr::addons::instruction_listener::InstructionListener {}));
 
     // mcu.attach(Box::new(uart));
 
